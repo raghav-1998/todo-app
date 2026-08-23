@@ -1,17 +1,32 @@
+# Dependencies
 node_modules/
+
+# Build
 dist/
 build/
+
+# Environment
 .env
 .env.*
 !.env.example
 
+# Testing
 coverage/
+
+# IDE
 .vscode/
 .idea/
 
+# OS
 .DS_Store
 Thumbs.db
 
+# Logs
 *.log
 
 prisma/*.db
+
+# Prisma / AI agent tooling
+.agents/
+.claude/
+.windsurf/
