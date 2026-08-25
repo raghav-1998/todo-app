@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -16,6 +18,7 @@
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
+  font-family: Inter, system-ui, sans-serif;
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
@@ -28,6 +31,10 @@
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+}
+
+*{
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,6 +55,11 @@
   #social .button-icon {
     filter: invert(1) brightness(2);
   }
+}
+html,
+body,
+#root{
+  min-height: 100%;
 }
 
 #root {
