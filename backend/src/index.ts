@@ -1,16 +1,19 @@
 import app from "./app";
 import { env } from "./config/env";
 import { logger } from "./config/logger";
+import { prisma } from "./db/prisma";
 
 const server=app.listen(env.PORT, ()=>{
     logger.info(`Backend of Taskflow is running on http://localhost:${env.PORT}`)
 })
 
-function shutdown(signal: string) {
+async function shutdown(signal: string) {
     logger.info(`${signal} received. Shutting down...`);
+    
+    server.close(async () => {
+        await prisma.$disconnect();
 
-    server.close(() => {
-        logger.info("HTTP server closed");
+        logger.info("HTTP server and database connection closed");
 
         process.exit(0);
     });
