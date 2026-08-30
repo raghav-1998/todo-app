@@ -24,7 +24,23 @@ const envSchema=z.object({
     
     DATABASE_URL:z
         .string()
-        .min(1)
+        .min(1),
+
+    //Adding Acess Token and Refresh Token related validations
+    JWT_ACCESS_SECRET:z.string().min(15),
+
+    JWT_REFRESH_SECRET:z.string().min(15),
+
+    JWT_ACCESS_EXPIRES_IN:z.string().default("15m"),
+
+    JWT_REFRESH_EXPIRES_IN:z.string().default("7d"),
+
+    COOKIE_SECURE:z
+        .enum(["true","false"])
+        .transform((val)=>val==="true")
+        .default(false)
+    
+
 })
 
 
