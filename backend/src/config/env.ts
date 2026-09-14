@@ -1,5 +1,6 @@
 import "dotenv/config";
 import {z} from "zod"
+import type {StringValue} from "ms"
 // export const env={
 //     nodeEnv:process.env.NODE_ENV ?? "development",
 //     port:Number(process.env.PORT ?? 5000),
@@ -31,9 +32,9 @@ const envSchema=z.object({
 
     JWT_REFRESH_SECRET:z.string().min(15),
 
-    JWT_ACCESS_EXPIRES_IN:z.string().default("15m"),
+    JWT_ACCESS_EXPIRES_IN:z.string().default("15m").transform((value)=>value as StringValue),
 
-    JWT_REFRESH_EXPIRES_IN:z.string().default("7d"),
+    JWT_REFRESH_EXPIRES_IN:z.string().default("7d").transform((value)=>value as StringValue),
 
     COOKIE_SECURE:z
         .enum(["true","false"])

@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodType } from "zod";
+import { ZodObject, ZodType } from "zod";
 
-export function validate(schema:ZodType){
+interface ValidationInput{
+    body?: unknown; 
+    query?: unknown; 
+    params?: unknown 
+}
+export const validate=<T extends ValidationInput>(schema:ZodType<T>)=>{
     return(
         req:Request,
         res:Response,
@@ -13,15 +18,17 @@ export function validate(schema:ZodType){
             params:req.params
         })
 
+        console.log(result);
+
         if(!result.success){
             return next(result.error)
         }
 
         //TODO Improve below 3 lines
         
-        // req.body=result.data.body
-        // req.query=result.data.query
-        // req.params=result.data.params   
+        if (result.data.body !== undefined) req.body = result.data.body;
+        if (result.data.query !== undefined) req.query = result.data.query as any;
+        if (result.data.params !== undefined) req.params = result.data.params as any;   
         
         next()
 
