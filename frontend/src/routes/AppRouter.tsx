@@ -6,11 +6,12 @@ import Todos from "../pages/todos/Todos"
 import Profile from "../pages/profile/Profile"
 import Settings from "../pages/settings/Settings"
 import AppLayout from "../components/layout/AppLayout"
+import ProtectedRoute from "./ProtectedRoute"
 export default function AppRouter(){
     return(
         <BrowserRouter>
             <Routes>
-                <Route
+                {/* <Route
                     path="/"
                     element={
                         <Navigate
@@ -18,7 +19,7 @@ export default function AppRouter(){
                             replace
                         />
                     }
-                />
+                /> */}
                 <Route
                     path="/login"
                     element={<Login/>}
@@ -27,7 +28,7 @@ export default function AppRouter(){
                     path="/register"
                     element={<Register/>}
                 />
-                <Route element={<AppLayout/>}>
+                {/* <Route element={<AppLayout/>}>
                     <Route
                         path="/dashboard"
                         element={<Dashboard/>}
@@ -43,6 +44,12 @@ export default function AppRouter(){
                     <Route
                         path="/settings"
                         element={<Settings/>}
+                    />
+                </Route> */}
+                <Route element={<ProtectedRoute/>}>
+                    <Route
+                        path="/"
+                        element={<Dashboard/>}
                     />
                 </Route>
                 
