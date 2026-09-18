@@ -7,6 +7,14 @@ const server=app.listen(env.PORT, ()=>{
     logger.info(`Backend of Taskflow is running on http://localhost:${env.PORT}`)
 })
 
+const url = new URL(process.env.DATABASE_URL!);
+
+console.log({
+  host: url.hostname,
+  port: url.port,
+  database: url.pathname,
+  username: url.username,
+});
 async function shutdown(signal: string) {
     logger.info(`${signal} received. Shutting down...`);
     
