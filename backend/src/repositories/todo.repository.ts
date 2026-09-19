@@ -1,22 +1,28 @@
 import { prisma } from "../db/prisma";
-import type { TodoPriority } from "../generated/prisma/enums";
+// import type { TodoPriority } from "../generated/prisma/enums";
+import { CreateTodoInput, TodoFilters, UpdateTodoInput } from "../types/todo.types";
 export class TodoRepository{
-    async createTodo(data:{
-        title:string;
-        description:string;
-        priority?:TodoPriority;
-        dueDate?:Date;
-        userId:string;
-        categoryId?:string;
-    }){
+    async createTodo(data:CreateTodoInput){
         return prisma.todo.create({
             data:{
                 title:data.title,
-                description:data.description,
+                // description:data.description,
                 priority:data.priority??"MEDIUM",
-                dueDate:data.dueDate,
+                // dueDate:data.dueDate,
                 userId:data.userId,
-                categoryId:data.categoryId
+                // categoryId:data.categoryId
+
+                ...(data.description!==undefined && {
+                    description:data.description
+                }),
+
+                ...(data.dueDate!==undefined &&{
+                    dueDate:data.dueDate
+                }),
+
+                ...(data.categoryId!==undefined &&{
+                    categoryId:data.categoryId
+                })
             },
         });
     }
@@ -41,10 +47,22 @@ export class TodoRepository{
         })
     }
 
-    async findTodosByUserId(userId:string){
+    async findTodosByUserId(userId:string, filter?:TodoFilters){
         return prisma.todo.findMany({
             where:{
-                userId
+                userId,
+
+                ...(filter?.completed!==undefined &&{
+                    completed:filter.completed
+                }),
+
+                ...(filter?.priority!==undefined &&{
+                    priority:filter.priority
+                }),
+
+                ...(filter?.categoryId!==undefined &&{
+                    categoryId:filter.categoryId
+                })
             },
             orderBy:{
                 createdAt:"desc"
@@ -55,14 +73,7 @@ export class TodoRepository{
     async updateTodo(
         id:string,
         userId:string,
-        data:{
-            title?:string,
-            description?: string | null;
-            completed?: boolean;
-            priority?: TodoPriority;
-            dueDate?: Date | null;
-            categoryId?: string | null;
-        }
+        data:UpdateTodoInput
     ){
         const todo=await prisma.todo.findFirst({
             where:{

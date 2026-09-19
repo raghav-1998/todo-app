@@ -1,15 +1,15 @@
 import { prisma } from "../db/prisma"
+import { CreateCategoryInput, UpdateCategoryInput } from "../types/category.types";
 
 export class CategoryRepository{
-    async createCategory(data:{
-        name:string,
-        color?:string,
-        userId:string
-    }){
+    async createCategory(data:CreateCategoryInput){
         return prisma.category.create({
             data:{
                 name:data.name,
-                color:data.color,
+                // color:data.color,
+                ...(data.color!== undefined &&{
+                    color:data.color
+                }),
                 userId:data.userId
             }
         });
@@ -35,13 +35,24 @@ export class CategoryRepository{
         })
     }
 
+    async findCategoryByName(
+        userId:string,
+        name:string
+    ){
+        return prisma.category.findUnique({
+            where:{
+                userId_name:{
+                    userId,
+                    name
+                }
+            }
+        })
+    }
+
     async updateCategory(
         id: string,
         userId: string,
-        data: {
-        name?: string;
-        color?: string | null;
-        }
+        data: UpdateCategoryInput
     ) {
         const category = await prisma.category.findFirst({
             where: {
