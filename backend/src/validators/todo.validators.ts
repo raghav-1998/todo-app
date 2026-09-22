@@ -88,8 +88,19 @@ const todoFiltersSchema=z.object({
     })
 })
 
+const todoIdSchema=z.object({
+    body:z.object({}),
+
+    params:z.object({
+        id:uuidSchema
+    }),
+
+    query:z.object({})
+})
+
 export{
     createTodoSchema,
     updateTodoSchema,
-    todoFiltersSchema
+    todoFiltersSchema,
+    todoIdSchema
 }
